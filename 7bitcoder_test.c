@@ -98,6 +98,9 @@ int main()
 {
 	enum endianness_type bo = TestByteOrder();
 	printf("Tests are running on %s byte order machine.\n", bo == LITTLE_ENDIAN_ ? "LITTLE_ENDIAN" : "BIG_ENDIAN.");
+	
+	// test for encode 8 bytes data and decode back and check if decoding was correct
+	// bytes: 1; 8; 16; 32.  checks can be extended
 	if (checkSingleBitEncodeAndDecode() && 
 	checkDecodeEncode_8_to_7_and_decode_back_8bytes() &&
 	checkEmptyInputString() &&
