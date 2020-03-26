@@ -21,21 +21,21 @@ bool checkSingleBitEncodeAndDecode() {
 	char* out_str = NULL;
 
 	text_7bit_encode(in_str, &out_str);
-	//consoleDumpAllBitsPerBytesInString("in", in_str);
-	//consoleDumpAllBitsPerBytesInString("out", out_str);
+	//consoleDumpAllBitsPerBytesInString("in_encode", in_str);
+	//consoleDumpAllBitsPerBytesInString("out_encode", out_str);
 
 	const char* in_str1 = out_str;// "```````";
 	char* out_str1 = NULL;
 	text_7bit_decode(in_str1, &out_str1);
-	//consoleDumpAllBitsPerBytesInString("in", in_str1);
-	//consoleDumpAllBitsPerBytesInString("out", out_str1);
+	//consoleDumpAllBitsPerBytesInString("in_decode", in_str1);
+	//consoleDumpAllBitsPerBytesInString("out_decode", out_str1);
 
 	// check only single symbol, decoding tried to reserve as byte it defined in rule of compression.
 	return (in_str[0] == out_str1[0]);
 }
 
-bool checkDecodeEncode_8_to_7_and_decode_back() {
-	const char* in_str = "````````";
+bool checkDecodeEncode_8_to_7_and_decode_back_8bytes() {
+	const char* in_str = "abcdefgh";
 	char* out_str = NULL;
 
 	text_7bit_encode(in_str, &out_str);
@@ -44,7 +44,39 @@ bool checkDecodeEncode_8_to_7_and_decode_back() {
 	char* out_str1 = NULL;
 
 	text_7bit_decode(in_str1, &out_str1);
-	// check if the same string after docoding for encoded data "````````"
+
+	// check if the same string after decoding for encoded data "````````"
+	return (strcmp(in_str, out_str1) == 0);
+}
+
+bool checkDecodeEncode_8_to_7_and_decode_back_16bytes() {
+	const char* in_str = "abcdefgh01234567";
+	char* out_str = NULL;
+
+	text_7bit_encode(in_str, &out_str);
+	//consoleDumpAllBitsPerBytesInString("in_encode", in_str);
+	//consoleDumpAllBitsPerBytesInString("out_encode", out_str);
+
+	const char* in_str1 = out_str;
+	char* out_str1 = NULL;
+
+	text_7bit_decode(in_str1, &out_str1);
+	//consoleDumpAllBitsPerBytesInString("in_decode", in_str1);
+	//consoleDumpAllBitsPerBytesInString("out_decode", out_str1);
+	// check if the same string after decoding for encoded data "````````"
+	return (strcmp(in_str, out_str1) == 0);
+}
+
+bool checkDecodeEncode_8_to_7_and_decode_back_32bytes() {
+	const char* in_str = "abcdefgh01234567abcdefgh01234567";
+	char* out_str = NULL;
+
+	text_7bit_encode(in_str, &out_str);
+
+	const char* in_str1 = out_str;
+	char* out_str1 = NULL;
+
+	text_7bit_decode(in_str1, &out_str1);
 	return (strcmp(in_str, out_str1) == 0);
 }
 
@@ -66,7 +98,11 @@ int main()
 {
 	enum endianness_type bo = TestByteOrder();
 	printf("Tests are running on %s byte order machine.\n", bo == LITTLE_ENDIAN_ ? "LITTLE_ENDIAN" : "BIG_ENDIAN.");
-	if (checkSingleBitEncodeAndDecode() && checkDecodeEncode_8_to_7_and_decode_back() && checkEmptyInputString()) {
+	if (checkSingleBitEncodeAndDecode() && 
+	checkDecodeEncode_8_to_7_and_decode_back_8bytes() &&
+	checkEmptyInputString() &&
+	checkDecodeEncode_8_to_7_and_decode_back_16bytes() &&
+	checkDecodeEncode_8_to_7_and_decode_back_32bytes()) {
 		printf("Basic test passed\n");
 		return 0;
 	}
