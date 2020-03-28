@@ -35,6 +35,7 @@ bool checkSingleBitEncodeAndDecode() {
   // rule of compression.
   const bool result = (in_str[0] == out_str1[0]);
   printf("Decode/Encode 1bytes test: %s\n", result ? "passed." : "failed.");
+
   free(out_str);
   free(out_str1);
   return result;
@@ -54,6 +55,7 @@ bool checkDecodeEncode_8_to_7_and_decode_back_8bytes() {
   // check if the same string after decoding for encoded data
   const bool result = strcmp(in_str, out_str1) == 0;
   printf("Decode/Encode 8bytes test: %s\n", result ? "passed." : "failed.");
+
   free(out_str);
   free(out_str1);
   return result;
@@ -71,12 +73,13 @@ bool checkDecodeEncode_8_to_7_and_decode_back_16bytes() {
   char *out_str1 = NULL;
 
   text_7bit_decode(in_str1, &out_str1);
-  /// note: for debugging just uncomment this code
+  /// note: for debugging, just uncomment this code
   // consoleDumpAllBitsPerBytesInString("in_decode", in_str1);
   // consoleDumpAllBitsPerBytesInString("out_decode", out_str1);
 
   const bool result = strcmp(in_str, out_str1) == 0;
   printf("Decode/Encode 16bytes test: %s\n", result ? "passed." : "failed.");
+
   free(out_str);
   free(out_str1);
   return result;
@@ -89,11 +92,12 @@ bool checkDecodeEncode_8_to_7_and_decode_back_32bytes() {
   text_7bit_encode(in_str, &out_str);
 
   const char *in_str1 = out_str;
-  char *out_str1 = (char*)calloc(10000, sizeof(char));
+  char *out_str1 = (char *)calloc(10000, sizeof(char));
   text_7bit_decode(in_str1, &out_str1);
-  
+
   const bool result = strcmp(in_str, out_str1) == 0;
   printf("Decode/Encode 32bytes test: %s\n", result ? "passed." : "failed.");
+
   free(out_str);
   free(out_str1);
   return result;
@@ -104,15 +108,21 @@ bool checkEncodeEmptyInputString() {
   char *out_str = NULL;
 
   int a = text_7bit_encode(in_str, &out_str);
-  return (STRING_EMPTY == (enum error_type)a);
+
+  bool result = (STRING_EMPTY == (enum error_type)a);
+  printf("%s: %s.\n", __FUNCTION__, result ? "OK" : "NOK");
+  return result;
 }
 
-bool checkDecodeEmptyInputString() {
+bool checkDecodeEmptyOutputString() {
   const char *in_str = NULL;
   char *out_str = NULL;
 
   int a = text_7bit_decode(in_str, &out_str);
-  return (STRING_EMPTY == (enum error_type)a);
+
+  bool result = (STRING_EMPTY == (enum error_type)a);
+  printf("%s: %s.\n", __FUNCTION__, result ? "OK" : "NOK");
+  return result;
 }
 
 enum endianness_type TestByteOrder() {
@@ -126,13 +136,11 @@ int main() {
   printf("Tests are running on %s byte order machine.\n",
          bo == LITTLE_ENDIAN_ ? "LITTLE_ENDIAN" : "BIG_ENDIAN.");
 
-while(1){
   // test for encode some bytes data and decode back and check if decoding was
   // correct. Bytes: 1; 8; 16; 32.  checks can be extended
   if (checkSingleBitEncodeAndDecode() &&
       checkDecodeEncode_8_to_7_and_decode_back_8bytes() &&
-      checkEncodeEmptyInputString() &&
-	  checkDecodeEmptyInputString() &&
+      checkEncodeEmptyInputString() && checkDecodeEmptyOutputString() &&
       checkDecodeEncode_8_to_7_and_decode_back_16bytes() &&
       checkDecodeEncode_8_to_7_and_decode_back_32bytes()) {
     printf("Basic tests have been passed.\n");
@@ -140,6 +148,6 @@ while(1){
   } else {
     printf("Basic test failed\n");
   }
-}
+
   return 1;
 }
