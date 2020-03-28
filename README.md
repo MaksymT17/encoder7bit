@@ -1,8 +1,8 @@
 ` encoder7bit `
 
 ## about:
-Library provides implementation for encoding bytes into 7bit date. Most significant bit will be not used, but at this place first bit of next byte will be stored.
-Compression happens because each byte will be stored as 7bits, as result output data length will be reduced.
+Library provides implementation for encoding bytes into 7bit data blocks. Most significant bit will be not used, but at this place first bit of next byte will be stored.
+Compression happens because each byte will be stored as 7bits instead of 8bits, as result output data length will be reduced.
 
 ## encoding:
 Encoding in defined interface will take input string and after applying encoding(compression) will return as second parameter encoded string.
