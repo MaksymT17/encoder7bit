@@ -9,7 +9,7 @@ SRCS = 7bitcoder.c  # source files
 OBJS = $(SRCS:.c=.o)
 
 .PHONY: all
-all: ${TARGET_LIB}
+all: ${TARGET_LIB} test
 
 $(TARGET_LIB): $(OBJS)
 	$(CC) ${LDFLAGS} -o $@ $^
@@ -21,7 +21,7 @@ include $(SRCS:.c=.d)
 
 .PHONY: clean
 clean:
-	-${RM} ${TARGET_LIB} ${OBJS} $(SRCS:.c=.d)
+	-${RM} ${TARGET_LIB} ${OBJS} $(SRCS:.c=.d) test
 
 test: $(OBJ)
 	$(CC) 7bitcoder_test.c 7bitcoder.c -o $@ $^ $(CFLAGS)
