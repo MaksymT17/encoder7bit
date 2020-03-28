@@ -114,7 +114,7 @@ bool checkEncodeEmptyInputString() {
   return result;
 }
 
-bool checkDecodeEmptyOutputString() {
+bool checkDecodeEmptyInputString() {
   const char *in_str = NULL;
   char *out_str = NULL;
 
@@ -138,9 +138,9 @@ int main() {
 
   // test for encode some bytes data and decode back and check if decoding was
   // correct. Bytes: 1; 8; 16; 32.  checks can be extended
-  if (checkSingleBitEncodeAndDecode() &&
+  if (checkSingleBitEncodeAndDecode() && checkEncodeEmptyInputString() &&
+      checkDecodeEmptyInputString() &&
       checkDecodeEncode_8_to_7_and_decode_back_8bytes() &&
-      checkEncodeEmptyInputString() && checkDecodeEmptyOutputString() &&
       checkDecodeEncode_8_to_7_and_decode_back_16bytes() &&
       checkDecodeEncode_8_to_7_and_decode_back_32bytes()) {
     printf("Basic tests have been passed.\n");
