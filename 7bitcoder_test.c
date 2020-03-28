@@ -24,7 +24,7 @@ bool checkSingleBitEncodeAndDecode() {
 	//consoleDumpAllBitsPerBytesInString("in_encode", in_str);
 	//consoleDumpAllBitsPerBytesInString("out_encode", out_str);
 
-	const char* in_str1 = out_str;// "```````";
+	const char* in_str1 = out_str;
 	char* out_str1 = NULL;
 	text_7bit_decode(in_str1, &out_str1);
 	//consoleDumpAllBitsPerBytesInString("in_decode", in_str1);
@@ -99,7 +99,7 @@ int main()
 	enum endianness_type bo = TestByteOrder();
 	printf("Tests are running on %s byte order machine.\n", bo == LITTLE_ENDIAN_ ? "LITTLE_ENDIAN" : "BIG_ENDIAN.");
 	
-	// test for encode 8 bytes data and decode back and check if decoding was correct
+	// test for encode some bytes data and decode back and check if decoding was correct
 	// bytes: 1; 8; 16; 32.  checks can be extended
 	if (checkSingleBitEncodeAndDecode() && 
 	checkDecodeEncode_8_to_7_and_decode_back_8bytes() &&
@@ -108,6 +108,9 @@ int main()
 	checkDecodeEncode_8_to_7_and_decode_back_32bytes()) {
 		printf("Basic test passed\n");
 		return 0;
+	}
+	else{
+		printf("Basic test failed\n");
 	}
 
 	return 1;

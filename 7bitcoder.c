@@ -34,12 +34,14 @@ int32_t text_7bit_encode(const char* txt_in, char** txt_out) {
 		if (!isCharacterAscii(txt_in[byte_id])) {
 			return -1;
 		}
+		int32_t in_id = byte_id * 8;
 		for (unsigned int i = 0; i < 7; i++) {
 			if ((txt_in[byte_id] >> i) & 1U) {
-				int32_t in_id = byte_id * 8 + i;
+				
 				int32_t out_id = encode_get_outId_from_inId(in_id);
 				tmp_out[out_id / 8] ^= (-1 ^ tmp_out[out_id / 8]) & (1 << out_id % 8);
 			}
+			++in_id;
 		}
 	}
 	tmp_out[out_length] = '\0';
@@ -47,7 +49,6 @@ int32_t text_7bit_encode(const char* txt_in, char** txt_out) {
 
 	return out_length;
 }
-
 
 int32_t decode_get_outId_from_inId(const int32_t inId) {
 	return inId + inId / 7;
@@ -68,17 +69,18 @@ int32_t text_7bit_decode(const char* txt_in, char** txt_out)
 	char *tmp_out = (char*)calloc(out_length, sizeof(char));
 
 	for (unsigned int byte_id = 0; byte_id < in_length; ++byte_id) {
+		int32_t in_id = byte_id * 8;
 		for (unsigned int i = 0; i < 8; i++) {
-			if ((txt_in[byte_id] >> i) & 1U) {
-				int32_t in_id = byte_id * 8 + i;
+			if ((txt_in[byte_id] >> i) & 1U) {				
 				int32_t out_id = decode_get_outId_from_inId(in_id);
 				tmp_out[out_id / 8] ^= (-1 ^ tmp_out[out_id / 8]) & (1 << out_id % 8);
+				
 			}
+			++in_id;
 		}
 	}
 	tmp_out[out_length] = '\0';
 
 	*txt_out = tmp_out;
 	return out_length;
-
 }
