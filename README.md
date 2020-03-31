@@ -8,7 +8,7 @@ Encoding in the defined interface will take an input string and after applying e
 Also, the input string will be checked if inside only [ASCII](https://en.wikipedia.org/wiki/ASCII) symbols, otherwise encode will return fail.
 
 ## decoding:
-Decoding string into the allocated output string. Where every 7 bits of data will be used for decoded byte and the most significant byte will be set to 0. Important is that inside of decoding new string will be allocated, which means a user of this function(decode) should take care of freeing returned(decoded) string.
+Decoding string into the allocated output string. Where every 7 bits of data will be used for decoded byte and the most significant byte will be set to 0. 
 
 ## byte length:
 According to rules of encoding where 8bits will be compressed to 7bits, which means that output[(encoded/compressed)](https://en.wikipedia.org/wiki/Binary_code#Coding_systems) string length will be reduced on 1 bit per byte.
